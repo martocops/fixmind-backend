@@ -1,16 +1,41 @@
-# React + Vite
+# FixMind
+Interfaz de usuario para el sistema de diagnóstico y reparación.
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Equipo
+- Pedro Ángel Zarzosa Piza
+- [Nombre de tu compañero]
 
-Currently, two official plugins are available:
+## Tecnologías
+- Backend: (Node + Express - En repositorio del servidor)
+- Base de datos: (PostgreSQL/MySQL - En repositorio del servidor)
+- Frontend: (React 19, Vite, HTML, CSS, JS)
+- API de terceros: (N/A)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Requisitos previos
+- Node.js v20 o superior
+- Servidor backend en ejecución
 
-## React Compiler
+## Instalación
+1. Clonar el repositorio: `git clone https://github.com/martocops/fixmind-backend.git`
+2. Entrar al frontend: `cd fixmind-frontend`
+3. Instalar dependencias: `npm install`
+4. Copiar `.env.example` a `.env` y completar los valores
+5. Iniciar el servidor de desarrollo: `npm run dev`
+6. Abrir el frontend en `http://localhost:5173`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Variables de entorno
+| Variable |     Descripción     | Ejemplo |
+|----------|-------------------- |---------|
+| VITE_API_URL | URL base de la API | http://localhost:8000/api |
 
-## Expanding the Oxlint configuration
+## Endpoints
+| Método |     Ruta    |  Descripción | Códigos de respuesta |
+|--------|-------------|--------------|----------------------|
+| GET    | /api/diagnosticos | Lista problemas |       200            |
+*(Nota: La lógica de rutas y BD está configurada en el backend).*
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Pruebas
+Colección de Postman en la carpeta `docs/` del repositorio Backend.
+
+## Licencia
+Distribuido bajo licencia MIT. Ver el archivo `LICENSE`.
