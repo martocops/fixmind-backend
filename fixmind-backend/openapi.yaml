@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: API FixMind
+  description: Servicio web para la gestión de usuarios y autenticación de la plataforma FixMind.
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: http://localhost:8000
+    description: Servidor local (Docker)
+
+tags:
+  - name: Usuarios
+    description: Operaciones sobre usuarios del sistema
+  - name: Autenticación
+    description: Endpoints de inicio de sesión
+
+paths:
+  /usuarios:
+    get:
+      tags: [Usuarios]
+      summary: Obtener todos los usuarios
+      description: Retorna la lista completa de usuarios registrados en Supabase.
+      responses:
+        "200":
+          description: Lista de usuarios obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  total_resultados:
+                    type: integer
+                    example: 2
+                  datos:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Usuario"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorRespuesta"
+
+    post:
+      tags: [Usuarios]
+      summary: Crear un nuevo usuario
+      description: Registra un nuevo usuario en la base de datos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NuevoUsuario"
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Usuario creado exitosamente
+                  usuario:
+                    $ref: "#/components/schemas/Usuario"
+        "400":
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorRespuesta"
+
+  /usuarios/{id_usuario}:
+    get:
+      tags: [Usuarios]
+      summary: Obtener un usuario por ID
+      parameters:
+        - name: id_usuario
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "1"
+      responses:
+        "200":
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  usuario:
+                    $ref: "#/components/schemas/Usuario"
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorRespuesta"
+
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id_usuario:
+          type: string
+          example: "USR-01"
+        nombre:
+          type: string
+          example: "Pedro Zarzosa"
+        email:
+          type: string
+          example: "pedro@example.com"
+
+    NuevoUsuario:
+      type: object
+      required:
+        - id_usuario
+        - nombre
+        - email
+      properties:
+        id_usuario:
+          type: string
+          example: "USR-02"
+        nombre:
+          type: string
+          example: "Juan Pérez"
+        email:
+          type: string
+          example: "juan@example.com"
+
+    ErrorRespuesta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Mensaje descriptivo del error
