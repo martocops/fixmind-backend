@@ -27,7 +27,7 @@ export default function TechRegister() {
 
     try {
       // Guarda el nuevo taller en Supabase vía backend
-      await axios.post('http://localhost:8000/usuarios', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/usuarios`, {
         id_usuario: formData.id_usuario.trim(),
         nombre: formData.nombre.trim(),
         email: formData.email.trim()

@@ -31,7 +31,7 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.use(morgan('dev'));
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: process.env.CORS_ORIGIN || 'https://fixmind-dusky.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -154,5 +154,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor FixMind corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor FixMind corriendo en el puerto ${PORT}`);
 });

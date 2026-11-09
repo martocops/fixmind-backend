@@ -26,7 +26,7 @@ Interfaz de usuario para el sistema de diagnóstico y reparación.
 ## Variables de entorno
 | Variable |     Descripción     | Ejemplo |
 |----------|-------------------- |---------|
-| VITE_API_URL | URL base de la API | http://localhost:8000/api |
+| | VITE_API_URL | URL base de la API | https://fixmind.onrender.com |
 
 ## Endpoints
 | Método |     Ruta    |  Descripción | Códigos de respuesta |

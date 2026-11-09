@@ -41,7 +41,7 @@ export default function AdminDashboard() {
   const fetchUsuarios = async () => {
     setLoading(true); setError(null);
     try {
-      const res = await axios.get('http://localhost:8000/usuarios');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`);
       setUsuarios(res.data.datos || []);
     } catch (err) {
       setError('No se pudo conectar con el servidor Supabase.');
@@ -53,7 +53,7 @@ export default function AdminDashboard() {
   const handleDelete = async (id) => {
     if (!window.confirm(`¿Confirmas eliminar permanentemente el taller ${id}?`)) return;
     try {
-      await axios.delete(`http://localhost:8000/usuarios/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/usuarios/${id}`);
       fetchUsuarios();
     } catch (err) {
       alert('Error al intentar eliminar el registro.');

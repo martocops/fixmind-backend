@@ -18,7 +18,7 @@ export default function UserHome() {
     setErrorSearch('');
     setPerfil(null);
     try {
-      const res = await axios.get(`http://localhost:8000/usuarios/${searchId.trim()}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/usuarios/${searchId.trim()}`);
       setPerfil(res.data.usuario);
     } catch (err) {
       setErrorSearch(err.response?.data?.message || 'Identificador no encontrado en la base de datos.');
