@@ -41,80 +41,26 @@ export default function Home() {
 
   // ================= CARGA INICIAL =================
   useEffect(() => {
+    // 1. Cargar sesión de usuario
     const sesion = localStorage.getItem('fixmind_user');
     if (sesion) setUsuarioActivo(JSON.parse(sesion));
 
-    // Plantilla base obligatoria con todos los datos de la Ficha Técnica
-    const defaults = [
-      { 
-        id: 'FIX-101', 
-        titulo: 'Drift en Joystick', 
-        categoria: 'controles', 
-        badge: 'Control', 
-        icon: 'fa-gamepad', 
-        colorIcon: 'bg-pink-100 text-pink-600', 
-        desc: 'Movimiento fantasma en potenciómetros.', 
-        pdfNombre: 'Guia_Drift.pdf', 
-        videoUrl: '',
-        voltaje: '3.3V',
-        tiempoRep: '45 mins',
-        dificultad: 'Media',
-        herramientas: 'Cautín, Malla desoldadora, Flux'
-      },
-      { 
-        id: 'FIX-102', 
-        titulo: 'Batería Degradada', 
-        categoria: 'celulares', 
-        badge: 'Celular', 
-        icon: 'fa-mobile-screen', 
-        colorIcon: 'bg-sky-100 text-sky-600', 
-        desc: 'El equipo se descarga rápidamente.', 
-        pdfNombre: 'Manual_Bateria.pdf', 
-        videoUrl: '',
-        voltaje: '3.85V',
-        tiempoRep: '30 mins',
-        dificultad: 'Baja',
-        herramientas: 'Pistola de calor, Ventosa, Espátula'
-      },
-      { 
-        id: 'FIX-103', 
-        titulo: 'Audio Desbalanceado', 
-        categoria: 'audifonos', 
-        badge: 'Audífonos', 
-        icon: 'fa-headphones', 
-        colorIcon: 'bg-purple-100 text-purple-600', 
-        desc: 'Un lado suena mucho más bajo por saturación.', 
-        pdfNombre: 'Limpieza_Audio.pdf', 
-        videoUrl: '',
-        voltaje: '5V USB',
-        tiempoRep: '20 mins',
-        dificultad: 'Baja',
-        herramientas: 'Alcohol isopropílico, Cepillo antiestático'
+    // 2. Pedir los datos reales al backend de Render
+    const cargarDiagnosticos = async () => {
+      try {
+        // Asegúrate de que '/diagnosticos' sea la ruta correcta en tu backend. 
+        // Si tu ruta se llama '/reparaciones' o '/api/tarjetas', cámbialo aquí:
+        const respuesta = await axios.get(`${import.meta.env.VITE_API_URL}/diagnosticos`);
+        setProblemas(respuesta.data);
+      } catch (error) {
+        console.error("Error al conectar con el servidor en Render:", error);
+        setProblemas([]); // Si hay error, deja el catálogo vacío sin romper la página
       }
-    ];
+    };
 
-    // Cargar Diagnósticos
-    const guardados = localStorage.getItem('fixmind_diagnosticos');
-    let datosAUsar = defaults;
+    cargarDiagnosticos();
 
-    if (guardados) {
-      const parseados = JSON.parse(guardados);
-      // Validación: Si el primer elemento existe pero NO empieza con "FIX-", 
-      // significa que es data vieja. Sobrescribimos con los defaults.
-      if (parseados.length > 0 && !String(parseados[0].id).startsWith('FIX-')) {
-         localStorage.setItem('fixmind_diagnosticos', JSON.stringify(defaults));
-         datosAUsar = defaults;
-      } else {
-         datosAUsar = parseados;
-      }
-    } else {
-      // Si no hay nada guardado, metemos los defaults
-      localStorage.setItem('fixmind_diagnosticos', JSON.stringify(defaults));
-    }
-    
-    setProblemas(datosAUsar);
-
-    // Cargar "Mi Colección"
+    // 3. Cargar "Mi Colección"
     const coleccionGuardada = localStorage.getItem('fixmind_mi_coleccion');
     if (coleccionGuardada) {
       const colParse = JSON.parse(coleccionGuardada);
@@ -125,7 +71,7 @@ export default function Home() {
         setMiColeccion(colParse);
       }
     }
-  }, []); // <--- El error 130 pasaba justo aquí
+  }, []);
 
   // ================= ACCIONES DE MI COLECCIÓN =================
   const guardarEnColeccion = (item) => {
@@ -228,7 +174,7 @@ export default function Home() {
     e.preventDefault();
     setLoginLoading(true); setLoginError('');
     try {
-      const res = await axios.post('http://localhost:8000/login', { ...credenciales, rol: rolLogin });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, { ...credenciales, rol: rolLogin });
       localStorage.setItem('fixmind_user', JSON.stringify(res.data.usuario));
       setUsuarioActivo(res.data.usuario);
       setModalLoginTech(false);
