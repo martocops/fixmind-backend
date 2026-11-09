@@ -50,7 +50,7 @@ export default function Home() {
       try {
         // Asegúrate de que '/diagnosticos' sea la ruta correcta en tu backend. 
         // Si tu ruta se llama '/reparaciones' o '/api/tarjetas', cámbialo aquí:
-        const respuesta = await axios.get(`${import.meta.env.VITE_API_URL}/diagnosticos`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/diagnosticos`);
         setProblemas(respuesta.data);
       } catch (error) {
         console.error("Error al conectar con el servidor en Render:", error);
